@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Mi Universo 💕</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* Configuración del Modo Oscuro Romántico */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at center, #1a0b2e 0%, #0b0314 100%);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+      overflow: hidden; 
+      position: relative;
+    }
+
+    /* Fondo de corazones y estrellas parpadeantes */
+    .fondo-corazones {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .corazon-titilante {
+      position: absolute;
+      color: rgba(255, 128, 179, 0.6);
+      font-size: 14px;
+      user-select: none;
+      animation: parpadeo cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes parpadeo {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 5px rgba(255, 128, 179, 0.8)); }
+    }
+
+    /* CONTENEDOR PRINCIPAL FIJO: Soluciona el problema de altura */
+    .escenario {
+      width: 100%;
+      max-width: 500px;
+      min-height: 450px; /* Le da una altura base constante a ambas ventanas */
+      position: relative;
+      perspective: 1000px;
+      z-index: 10;
+    }
+
+    /* Tarjeta estilo Neumorfismo Oscuro / Cristal */
+    .card {
+      background: rgba(20, 10, 35, 0.75);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2), 
+                  0 0 25px rgba(138, 43, 226, 0.15);
+      text-align: center;
+      border: 1px solid rgba(255, 128, 179, 0.25);
+      
+      /* Hacemos que ocupen el mismo espacio absoluto dentro de .escenario */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 100%; /* Ambas heredan los 450px mínimos */
+      
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Centra el contenido internamente verticalmente */
+      
+      /* Propiedades para la animación de cambio de ventana */
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Estados de animación modificados para transiciones perfectas */
+    .card.salir-izquierda {
+      transform: translateX(-120%) rotateY(-15deg);
+      opacity: 0;
+      pointer-events: none; /* Evita clicks fantasmas mientras sale */
+    }
+
+    .card.entrar-derecha {
+      transform: translateX(120%) rotateY(15deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Títulos con tipografía Serif súper elegante */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: #ff80b3;
+      font-size: 2.2rem;
+      margin-top: 0;
+      margin-bottom: 12px;
+      text-shadow: 0 0 10px rgba(255, 128, 179, 0.4);
+    }
+
+    .subtitulo {
+      color: #b3a2c7;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    /* Contenedor de botones */
+    .botones-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    /* Botones oscuros con borde de neón sutil */
+    button {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffa6cc;
+      border: 1px solid rgba(255, 128, 179, 0.4);
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* Hover de los botones */
+    button:hover {
+      background: linear-gradient(135deg, #d63384 0%, #8a2be2 100%);
+      color: white;
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(214, 51, 132, 0.4);
+    }
+
+    /* Estilos para la ventana de Mensaje */
+    .mensaje-texto {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: #fff;
+      line-height: 1.6;
+      margin-top: 15px;
+      margin-bottom: 35px;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Botón especial para regresar */
+    .btn-regresar {
+      background: transparent;
+      color: #b3a2c7;
+      border: 1px solid rgba(179, 162, 199, 0.3);
+      align-self: center; /* Centra el botón de regreso horizontalmente */
+    }
+    
+    .btn-regresar:hover {
+      background: rgba(179, 162, 199, 0.1);
+      color: #fff;
+      border-color: #b3a2c7;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fondo-corazones" id="capa-fondo"></div>
+
+  <div class="escenario">
+    
+    <div id="ventana-inicio" class="card">
+      <h1>Para Mi Universo</h1>
+      <p class="subtitulo">Dime, mi amor... ¿Cómo se encuentra tu corazoncito en este momento?</p>
+
+      <div class="botones-container">
+        <button onclick="cambiarVentana('feliz')">😊 Feliz</button>
+        <button onclick="cambiarVentana('triste')">😢 Triste</button>
+        <button onclick="cambiarVentana('cansada')">😴 Cansada</button>
+        <button onclick="cambiarVentana('estresada')">🤯 Estresada</button>
+        <button onclick="cambiarVentana('motivada')">💪 Motivada</button>
+        <button onclick="cambiarVentana('enamorada')">❤️ Enamorada</button>
+        <button onclick="cambiarVentana('teExtrano')">🥺 Te extraño</button>
+        <button onclick="cambiarVentana('logro')">🏆 ¡Logré algo!</button>
+      </div>
+    </div>
+
+    <div id="ventana-mensaje" class="card entrar-derecha" style="display: none;">
+      <h1>Un mensajito...</h1>
+      <div class="mensaje-texto" id="texto-frase"></div>
+      <button class="btn-regresar" onclick="regresarInicio()">✨ Elegir otro estado</button>
+    </div>
+
+  </div>
+
+  <script>
+    const frases = {
+      feliz: [
+        "Tu sonrisa ilumina mi mundo entero de una forma inexplicable. ✨",
+        "Me haces el chico más feliz del universo solo con estar a mi ladito. 💕",
+        "Verte feliz es, sin duda, mi parte favorita de cada día. 😍",
+        "Tu felicidad siempre será mi prioridad número uno. 🫶",
+        "Imaginate, ahi vivir y ahi morir enrolladito a ti como un gongoli 🫠"
+      ],
+      triste: [
+        "No olvides que siempre, pase lo que pase, estaré aquí para sostener tu mano. 💖",
+        "Tus lágrimas merecen convertirse en sonrisas, y haré lo que sea por lograrlo. 🌈",
+        "Eres muchísimo más fuerte de lo que te imaginas en este momento. 💪",
+        "Está bien no estar bien a veces. Tómate tu tiempo, yo jamás me iré de tu lado. 🧸",
+        "siempre preferire que llores en mi hombre y me manches con tus lagrimas, a que llores sola. ❤️"
+      ],
+      cansada: [
+        "Descansa, mi amor, has dado lo mejor de ti hoy y te lo súper mereces. 🌙",
+        "Cierra tus ojitos y relájate, yo me quedo aquí cuidando tus sueños en mi mente. 💫",
+        "Tu esfuerzo me inspira demasiado cada día, pero ahora te toca un descanso flakita. 🌹",
+        "Te mereces lo mejor, y en este momento lo mejor es que descases corazon. 😊"
+      ],
+      estresada: [
+        "Respira profundo, mi vida, vamos paso a paso, tú puedes con esto y más. ",
+        "No dejes que las cosas del día te abrumen recuerda que todo pasa. ",
+        "Si el mundo corre muy rápido, nosotros nos detenemos un ratito juntos",
+        "intenta relajar tu cuerpito, aquí estoy yo para recordarte lo increíble que eres. 🌸"
+      ],
+      motivada: [
+        "¡Nada puede detenerte! Ve y conquista el mundo, eres totalmente increíble flakita",
+        "Confío en tu talento y en tu capacidad de lograra lo que te propones.",
+        "Tus metas podran ser grandes, pero tu corazón y tus ganas lo son aún más. ",
+        "Sé que todo lo que te propongas hoy lo vas a lograr y mas corazon"
+      ],
+      enamorada: [
+        "Yo también estoy completa y perdidamente enamorado de ti, cada día más. ❤️",
+        "Eres ese mensajit que me da la razón para sonreír frente a la pantalla. 🌸",
+        "Nuestro amor es lo más bonito, puro y valioso que tengo en la vida. 💞",
+        "Cada detalle tuyo me vuelve a enamorar como si fuera el primer día. 💘",
+        "te quiero siempre a mi ladito como Yoko"
+      ],
+      teExtrano: [
+        "Yo también te extraño demasiado, cada minuto sin hablar contigo me duele un montón. 🥺",
+        "Cierra los ojos un segundo e imagina que te estoy dando el abrazo más fuerte del mundo. 🤗",
+        "No importa la distancia física, mi corazón están pegaditos al tuyo siempre mi vida.",
+        "Me tienes contando los segundos para volver a verte o escucharte. Me haces falta."
+      ],
+      logro: [
+        "¡Esooo! Sabía perfectamente que lo lograrías, ¡estoy orgulloso de ti! ",
+        "Tu dedicación siempre da frutos. ¡Felicidades, mi amor, te mereces este éxito!",
+        "Eres una cajita de sorpresas y puros talentos",
+        "Qué bonito es ver cómo alcanzas lo que te propones. Eres mi mayor orgullo.",
+        "Ningun soñador es muy pequeño, y ningun sueño es muy grande ❤️"
+      ]
+    };
+
+    const ventanaInicio = document.getElementById('ventana-inicio');
+    const ventanaMensaje = document.getElementById('ventana-mensaje');
+    const textoFrase = document.getElementById('texto-frase');
+
+    function cambiarVentana(estado) {
+      const lista = frases[estado];
+      const randomIndex = Math.floor(Math.random() * lista.length);
+      textoFrase.innerText = lista[randomIndex];
+
+      ventanaMensaje.style.display = 'flex';
+      ventanaMensaje.classList.add('entrar-derecha');
+
+      setTimeout(() => {
+        ventanaInicio.classList.add('salir-izquierda');
+        ventanaMensaje.classList.remove('entrar-derecha');
+      }, 30);
+    }
+
+    function regresarInicio() {
+      ventanaMensaje.classList.add('entrar-derecha');
+      ventanaInicio.classList.remove('salir-izquierda');
+
+      setTimeout(() => {
+        ventanaMensaje.style.display = 'none';
+      }, 500);
+    }
+
+    function crearFondoMagico() {
+      const capaFondo = document.getElementById('capa-fondo');
+      const simbolos = ['❤', '💖', '✨', '♥', '🌸', '💗'];
+      const cantidad = 65;
+
+      for (let i = 0; i < cantidad; i++) {
+        const elemento = document.createElement('div');
+        elemento.classList.add('corazon-titilante');
+        elemento.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+        elemento.style.left = Math.random() * 100 + 'vw';
+        elemento.style.top = Math.random() * 100 + 'vh';
+        
+        const duracion = Math.random() * 3 + 2;
+        const retraso = Math.random() * 4;
+        elemento.style.animationDuration = `${duracion}s`;
+        elemento.style.animationDelay = `${retraso}s`;
+        
+        const escala = Math.random() * 0.6 + 0.6;
+        elemento.style.transform = `scale(${escala})`;
+
+        capaFondo.appendChild(elemento);
+      }
+    }
+
+    window.onload = crearFondoMagico;
+  </script>
+</body>
+</html>
